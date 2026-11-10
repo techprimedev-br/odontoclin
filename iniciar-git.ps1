@@ -97,19 +97,27 @@ try {
     }
 
     # 4) GitHub
-    if (-not $RemoteUrl -and -not $NoPause) {
+    $hasOrigin = (Invoke-Git remote).Output -split "\s+" -contains "origin"
+    if (-not $RemoteUrl -and $hasOrigin) {
+        # atualizacao: reaproveita o remote que ja foi configurado na primeira vez
+        $RemoteUrl = (Invoke-Git remote get-url origin).Output
+        Write-Step "Usando o remote ja configurado: $RemoteUrl" "DarkGray"
+    }
+    elseif (-not $RemoteUrl -and -not $NoPause) {
         $RemoteUrl = Read-Host "URL do repositorio no GitHub (Enter para pular)"
     }
     if ($RemoteUrl) {
-        $hasOrigin = (Invoke-Git remote).Output -split "\s+" -contains "origin"
         if ($hasOrigin) { Assert-Git (Invoke-Git remote set-url origin $RemoteUrl) "git remote set-url" }
         else            { Assert-Git (Invoke-Git remote add origin $RemoteUrl)     "git remote add" }
 
         Write-Step "Enviando para $RemoteUrl ..." "Cyan"
         $push = Invoke-Git push -u origin $Branch
         if ($push.Code -ne 0) {
-            throw ("git push falhou:`n" + $push.Output +
-                   "`n`nConfira: o repositorio existe e esta vazio? Voce esta logado no GitHub (navegador/Git Credential Manager)?")
+            throw ("git push falhou:`
+" + $push.Output +
+                   "`
+`
+Confira: o repositorio existe e esta vazio? Voce esta logado no GitHub (navegador/Git Credential Manager)?")
         }
         Write-Step "Enviado com sucesso."
     } else {

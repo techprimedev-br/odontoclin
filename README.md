@@ -4,7 +4,7 @@ Cópia estática das telas do projeto: **somente odontologia**, **sem preços de
 
 ## Como abrir
 
-Dê dois cliques em `index.html`. O link **Admin** leva ao painel e a barra lateral navega entre as telas. Não precisa de servidor nem de internet.
+Dê dois cliques em `index.html`. Os botões **Agendar** e **Meu agendamento** abrem as telas do cliente; o link **Admin** leva ao painel e a barra lateral navega entre as telas. Não precisa de servidor nem de internet.
 
 ## Definir o nome da clínica
 
@@ -16,7 +16,12 @@ powershell -ExecutionPolicy Bypass -File .\definir-nome.ps1 -Nome "Nome da Clín
 
 ## Subir para o git
 
-Dê dois cliques em `iniciar-git.bat` (ou `powershell -ExecutionPolicy Bypass -File .\iniciar-git.ps1`). Ele cria o repositório, faz o commit e, se você colar a URL de um repositório vazio no GitHub, envia.
+**Primeira vez:** dê dois cliques em `iniciar-git.bat` (ou `powershell -ExecutionPolicy Bypass -File .\iniciar-git.ps1`). Ele cria o repositório, faz o commit e, se você colar a URL de um repositório vazio no GitHub, envia.
+
+**Atualizar depois:** apague tudo da pasta **exceto a pasta oculta `.git`**, extraia o zip novo ali dentro e rode `iniciar-git.bat` de novo. Ele detecta o repositório, commita só o que mudou (inclusive arquivos apagados) e envia para o mesmo GitHub, sem pedir a URL. Para dar uma mensagem ao commit:
+```powershell
+powershell -ExecutionPolicy Bypass -File .\iniciar-git.ps1 -Message "Adiciona telas de agendamento"
+```
 
 ## Telas
 
@@ -30,7 +35,9 @@ Dê dois cliques em `iniciar-git.bat` (ou `powershell -ExecutionPolicy Bypass -F
 | `profissionais.html` | Profissionais |
 | `financeiro.html` | Módulo Financeiro |
 | `configuracoes.html` | Configurações & WhatsApp |
-| `nao-exportada.html` | Destino dos links de telas que não foram exportadas (`/agendar`, `/meu-agendamento`, login) |
+| `agendar.html` | Agendar consulta (etapa 1: escolha do procedimento, sem preços) |
+| `meu-agendamento.html` | Meu agendamento (consultar/remarcar/cancelar por protocolo) |
+| `nao-exportada.html` | Destino dos links de telas que não foram exportadas (login e etapas seguintes do agendamento) |
 
 ## Observações
 
